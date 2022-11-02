@@ -12,9 +12,8 @@ class Plant {
         this.last
     }
 
-    add() {
-
-        // create the HTML for signle plant
+    draw() {
+    // create the HTML for signle plant
         const div = document.createElement('div')
         div.classList.add('plant-item')
         div.style.position = 'relative'
@@ -22,21 +21,17 @@ class Plant {
         
         <img src="./potted-plant.png">
         <h2>${this.plantName}</h2>
-        <p>Water every: ${this.wateringSchedule} days</p>
-        <p>Fertilize every: ${this.fertilizingSchedule} days</p>
+        <p>Water me every: ${this.wateringSchedule} days</p>
+        <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
         <p>Water me on: ${this.addDays(this.lastWatered, this.wateringSchedule)}</p>
         <p>Fertilize me on: ${this.addDays(this.lastFertilized, this.fertilizingSchedule)}</p>
         `
         const removeButton = document.createElement('p')
         removeButton.innerHTML= "Remove"
         removeButton.classList = "remove-button"
-        // removeButton.style.position = 'absolute'
-        // removeButton.style.top = 0;
         div.appendChild(removeButton)
         
         plantCollection.appendChild(div);
-        PLANT_COLLECTION.push(this)
-        localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
 
         //handle removing plant
         removeButton.addEventListener('click', (e) => {
@@ -44,11 +39,11 @@ class Plant {
             PLANT_COLLECTION.filter((obj) => {
                 return obj.id !== this.id;
             })
-            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
         })
     }
-    // handle calculating next watering/fertilizng date
+
     addDays (date, days) {
+    // handle calculating next watering/fertilizng date
         let result = new Date(date);
         result.setDate(result.getDate() + days);
         return result.toLocaleDateString();
