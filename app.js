@@ -1,8 +1,8 @@
 
     // draw each plant from local storage
-
     for (const plant of PLANT_COLLECTION) {
-        addPlant(plant)
+        const newPlant = new Plant(plant);
+        newPlant.draw()
     }
 
     const addPlantButton = document.getElementById("add-plant-button")
@@ -39,6 +39,7 @@
 
     function addPlant(object) {
         const plant = new Plant(object);
-        plant.add()
-   
+        plant.draw()
+        PLANT_COLLECTION.push(plant)
+        localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
     }
