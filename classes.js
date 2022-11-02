@@ -29,11 +29,14 @@ class Plant {
         `
         const removeButton = document.createElement('p')
         removeButton.innerHTML= "Remove"
-        removeButton.style.position = 'absolute'
-        removeButton.style.top = 0;
+        removeButton.classList = "remove-button"
+        // removeButton.style.position = 'absolute'
+        // removeButton.style.top = 0;
         div.appendChild(removeButton)
         
         plantCollection.appendChild(div);
+        PLANT_COLLECTION.push(this)
+        localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
 
         //handle removing plant
         removeButton.addEventListener('click', (e) => {
@@ -41,6 +44,7 @@ class Plant {
             PLANT_COLLECTION.filter((obj) => {
                 return obj.id !== this.id;
             })
+            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
         })
     }
     // handle calculating next watering/fertilizng date
