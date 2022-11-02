@@ -1,0 +1,69 @@
+@font-face {
+    font-family: ArchitechtsDaughter;
+    src: url("ArchitectsDaughter-Regular.ttf");
+}
+
+* {
+    box-sizing: border-box;
+    font-family: ArchitechtsDaughter;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+    position:relative;
+}
+
+#plant-collection {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.plant-div >p {
+    text-align: center;
+}
+
+#modal {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#pop-up {
+    width: 33%;
+    background-color: white;
+    padding: 15px;
+}
+
+#pop-up > form > input, #pop-up > form > button {
+    font-size: 16px;
+    width: 100%;
+    margin: 10px auto;
+    padding: 15px;
+    border-radius: 10px;
+    border:1px solid #c1dfc4;
+    box-shadow: none;
+}
+
+button {
+    font-size: 2vh;
+    width: 90%;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: none;
+    border: 1px solid #c1dfc4 ;
+    padding: 15px;
+
+}
+
+button:hover {
+    background-color:#c1dfc4;
+    cursor: pointer;
+}

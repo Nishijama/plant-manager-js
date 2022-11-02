@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Manger 🌿</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button id="add-plant-button">Add a new plant 🌿</button>
+    <div id="plant-collection"></div>
+    
+    <div id="modal">
+        <div id="pop-up">
+            <form id="plant-form">
+                <input type="text" required name="plant-name" id="plant-name-input" placeholder="What's my name?">
+                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" required id="watering-last-date" placeholder="When was I last watered?">
+                <input type="number" required id="watering-time-input" placeholder="After how many days should I be watered?">
+                <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')" required id="fertilizing-last-date" placeholder="When was I last fertilized?">
+                <input type="number" required id="fertilizing-time-input" placeholder="After how many days should I be fertilized?">
+                <input type="text" required id="notes-input" placeholder="Additional notes about me">
+                <button type="submit" id="plant-button">Plant!</button>
+            </form>
+        </div>
+    </div>
+    <script src="classes.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
