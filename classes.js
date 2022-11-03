@@ -1,11 +1,11 @@
 
 class Plant {
-    constructor({plantName, lastWatered, lastFertilized, wateringSchedule, fertilizingSchedule, notes}) {
+    constructor({id = Math.floor(Math.random() * 9999),plantName, lastWatered, lastFertilized, wateringSchedule, fertilizingSchedule, notes}) {
         this.plantName = plantName;
         this.wateringSchedule = Number(wateringSchedule);
         this.fertilizingSchedule = Number(fertilizingSchedule);
         this.notes = notes;
-        this.id = Math.floor(Math.random() * 9999);
+        this.id = id;
         this.lastWatered = new Date(lastWatered);
         this.lastFertilized = new Date(lastFertilized);
         this.dateAdded = new Date();
@@ -36,9 +36,13 @@ class Plant {
         //handle removing plant
         removeButton.addEventListener('click', (e) => {
             e.target.parentElement.remove();
-            PLANT_COLLECTION.filter((obj) => {
+            let filtered = PLANT_COLLECTION.filter((obj) => {
+                console.log(obj.id);
+                console.log(this.id);
                 return obj.id !== this.id;
             })
+            // console.log(filtered);
+            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(filtered))
         })
     }
 
