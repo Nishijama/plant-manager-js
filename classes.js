@@ -64,8 +64,8 @@ class Plant {
         plantDiv.appendChild(fertilizingDiv)
 
         // remove button
-        const removeButton = document.createElement('div')
-        removeButton.innerHTML= `<img src="./images/billhook.png" style="width: 2.5vh; height: auto;">`
+        const removeButton = document.createElement('img')
+        removeButton.src = "./images/billhook.png"
         removeButton.classList = "remove-button"
         plantDiv.appendChild(removeButton)
         
