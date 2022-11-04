@@ -50,3 +50,19 @@
         PLANT_COLLECTION.push(plant)
         localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
     }
+
+
+   function testingFunction() {
+        for (let i = 15; i < 20; i++)
+        {
+            addPlant(
+                {
+                    plantName: `Test Plant ${i-15}`, 
+                    lastWatered: `2022-10-${i}`, 
+                    lastFertilized: `2022-10-${i}`, 
+                    wateringSchedule: i, 
+                    fertilizingSchedule: i*2, 
+                    notes: "testing"
+            });
+        }
+    }

@@ -25,9 +25,14 @@ class Plant {
         <h2>${this.plantName}</h2>
        <p>Water me every: ${this.wateringSchedule} days</p>
        <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
-       <p>Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}</p>
-        <p>Water me on: ${this.nextWateringDate.toLocaleDateString()}</p>
         `
+
+        const nextWateringDate_p = document.createElement('p')
+        nextWateringDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`
+
+        const nextFertilizingDate_p = document.createElement('p')
+        nextFertilizingDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`
+
 
         // watering row
         const wateringDiv = document.createElement('div')
@@ -42,9 +47,27 @@ class Plant {
             // water button
             const waterButton = document.createElement('div')
             waterButton.innerHTML = `<img src="./images/watering-can (1).png" style="margin-left: 10px; width: 2.5vh; height: auto;">`
+            
+            waterButton.addEventListener('click', () => {
+                this.lastWatered = this.trimDate(TODAY);
+                this.nextWateringDate = this.addDays(this.lastWatered, this.wateringSchedule)
+                
+                // handle updating local storage with new watering data
+                for (let item of PLANT_COLLECTION) {
+                        if (item.id === this.id){
+                        let index = (PLANT_COLLECTION.indexOf(item));
+                        PLANT_COLLECTION[index].lastWatered = this.lastWatered
+                        PLANT_COLLECTION[index].nextWateringDate = this.nextWateringDate
+                    }
+                }
+                localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
+                
+                // update DOM
+                nextWateringDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`;
+                watering_p.innerText = this.getWateringDL();
+            })
             wateringDiv.appendChild(waterButton)
         
-        plantDiv.appendChild(wateringDiv)
         
 
         // fertilizing row
@@ -60,16 +83,40 @@ class Plant {
             // fertlize button
             const fertilizeButton = document.createElement('div')
             fertilizeButton.innerHTML = `<img src="./images/npk.png" style="margin-left: 10px; width: 2.5vh; height: auto;">`
+            fertilizeButton.addEventListener('click', () => {
+                this.lastFertilized = this.trimDate(TODAY);
+                this.nextFertilizingDate = this.addDays(this.lastFertilized, this.fertilizingSchedule)
+                
+                // handle updating local storage with new watering data
+                for (let item of PLANT_COLLECTION) {
+                    if (item.id === this.id){
+                        let index = (PLANT_COLLECTION.indexOf(item));
+                        PLANT_COLLECTION[index].lastFertilized = this.lastFertilized
+                        PLANT_COLLECTION[index].nextFertilizingDate = this.nextFertilizingDate
+                    }  
+                }
+
+                localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
+                
+                // update DOM
+                nextFertilizingDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`;
+                fertilizing_p.innerText = this.getFertilizingDL()
+
+            })
             fertilizingDiv.appendChild(fertilizeButton)
-
-        plantDiv.appendChild(fertilizingDiv)
-
+            
+            
         // remove button
         const removeButton = document.createElement('img')
         removeButton.src = "./images/billhook.png"
         removeButton.classList = "remove-button"
+            
+        // assemble plantDiv element and append it to the collection
+        plantDiv.appendChild(nextWateringDate_p)
+        plantDiv.appendChild(nextFertilizingDate_p)
+        plantDiv.appendChild(wateringDiv)
+        plantDiv.appendChild(fertilizingDiv)
         plantDiv.appendChild(removeButton)
-        
         plantCollection.appendChild(plantDiv);
 
         //handle removing plant
@@ -81,6 +128,7 @@ class Plant {
         })
     }
 
+    // calculate next watering date
     getWateringDL() {
         if (this.nextWateringDate > this.trimDate(TODAY)) {
             return `Water me in: ${(this.nextWateringDate - this.trimDate(TODAY)) / 8.64e+7 } days`
@@ -89,6 +137,7 @@ class Plant {
         }
     }
 
+    // calculate next fertilizing date
     getFertilizingDL() {
         if (this.nextFertilizingDate > this.trimDate(TODAY)) {
             return `Fertilize me in: ${(this.nextFertilizingDate - this.trimDate(TODAY)) / 8.64e+7 } days`
@@ -97,7 +146,7 @@ class Plant {
         }
     }
 
-
+    // add days to a date
     addDays (date, days) {
     // handle calculating next watering/fertilizng date
         let result = new Date(date);
@@ -105,6 +154,7 @@ class Plant {
         return result;
     }
 
+    // trim date to remove time
     trimDate(date) {
         //remove time (hourse, minutes, seconds, miliseconds) from the date
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
