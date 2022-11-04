@@ -9,14 +9,16 @@
     const plantForm = document.getElementById("plant-form")
     const modal = document.getElementById("modal")
 
+
+    // display plant adding window
     addPlantButton.addEventListener('click', () => {
         modal.style.display = 'flex';
-        window.addEventListener('keydown', (e) => {
+        window.addEventListener('keydown', e => {
             if (e.key === "Escape") {
                 modal.style.display = 'none'
             }
         })
-        window.addEventListener('click', (e) => {
+        window.addEventListener('click', e => {
             if (e.target == modal) {
                 modal.style.display = 'none'
             }
@@ -24,7 +26,7 @@
 
     })
 
-    plantForm.addEventListener('submit', (e) => {
+    plantForm.addEventListener('submit', e => {
         //get values from the form
         e.preventDefault();
 

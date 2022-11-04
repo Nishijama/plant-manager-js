@@ -23,9 +23,10 @@ class Plant {
         plantDiv.innerHTML = `
         <img src="./images/succulent.png" style="width: 250px; height: auto;">
         <h2>${this.plantName}</h2>
-       <!-- <p>Water me every: ${this.wateringSchedule} days</p>
-        <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
-        <p>Water me on: ${this.nextWateringDate.toLocaleDateString()}</p> -->
+       <p>Water me every: ${this.wateringSchedule} days</p>
+       <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
+       <p>Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}</p>
+        <p>Water me on: ${this.nextWateringDate.toLocaleDateString()}</p>
         `
 
         // watering row
@@ -72,29 +73,26 @@ class Plant {
         plantCollection.appendChild(plantDiv);
 
         //handle removing plant
-        removeButton.addEventListener('click', (e) => {
+        removeButton.addEventListener('click', e => {
             e.target.parentElement.remove();
-            let filtered = PLANT_COLLECTION.filter((obj) => {
-                console.log(obj.id);
-                console.log(this.id);
-                return obj.id !== this.id;
-            })
-            // console.log(filtered);
-            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(filtered))
+            let filtered = PLANT_COLLECTION.filter(obj => obj.id !== this.id);
+            PLANT_COLLECTION = filtered;
+            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(filtered));
         })
     }
+
     getWateringDL() {
-        if (this.nextWateringDate.toLocaleDateString() > this.trimDate(TODAY).toLocaleDateString()) {
+        if (this.nextWateringDate > this.trimDate(TODAY)) {
             return `Water me in: ${(this.nextWateringDate - this.trimDate(TODAY)) / 8.64e+7 } days`
-        } else if (this.nextWateringDate.toLocaleDateString() === this.trimDate(TODAY).toLocaleDateString()) {
+        } else if (this.nextWateringDate <= this.trimDate(TODAY)) {
             return "Water me TODAY!"
         }
     }
 
     getFertilizingDL() {
-        if (this.nextFertilizingDate.toLocaleDateString() > this.trimDate(TODAY).toLocaleDateString()) {
+        if (this.nextFertilizingDate > this.trimDate(TODAY)) {
             return `Fertilize me in: ${(this.nextFertilizingDate - this.trimDate(TODAY)) / 8.64e+7 } days`
-        } else if (this.nextFertilizingDate.toLocaleDateString() === this.trimDate(TODAY).toLocaleDateString()) {
+        } else if (this.nextFertilizingDate <= this.trimDate(TODAY)) {
             return "Fertilize me TODAY!"
         }
     }
