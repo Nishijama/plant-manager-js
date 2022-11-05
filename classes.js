@@ -1,7 +1,8 @@
 
 class Plant {
-    constructor({id = Math.floor(Math.random() * 9999),plantName, lastWatered, lastFertilized, wateringSchedule, fertilizingSchedule, notes}) {
+    constructor({id = Math.floor(Math.random() * 9999),plantName, plantType, lastWatered, lastFertilized, wateringSchedule, fertilizingSchedule, notes}) {
         this.plantName = plantName;
+        this.plantType = plantType;
         this.wateringSchedule = Number(wateringSchedule);
         this.fertilizingSchedule = Number(fertilizingSchedule);
         this.notes = notes;
@@ -12,6 +13,7 @@ class Plant {
         this.nextFertilizingDate = this.addDays(this.lastFertilized, this.fertilizingSchedule)
     }
 
+
     draw() {
     // create the HTML for signle plant
         const plantDiv = document.createElement('div')
@@ -19,25 +21,25 @@ class Plant {
         plantDiv.style.position = 'relative'
         plantDiv.style.marginTop = "10vh"
         plantDiv.style.margin = "10vh 5vw"
+        
+        console.log(this.plantType);
 
         plantDiv.innerHTML = `
-        <img src="./images/succulent.png" style="width: 250px; height: auto;">
+        <img src="./images/plants/${this.plantType}.png" style="width: 250px; height: auto;">
         <h2>${this.plantName}</h2>
-       <p>Water me every: ${this.wateringSchedule} days</p>
-       <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
         `
 
-        const nextWateringDate_p = document.createElement('p')
-        nextWateringDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`
+        // const nextWateringDate_p = document.createElement('p')
+        // nextWateringDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`
 
-        const nextFertilizingDate_p = document.createElement('p')
-        nextFertilizingDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`
+        // const nextFertilizingDate_p = document.createElement('p')
+        // nextFertilizingDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`
 
 
         // watering row
         const wateringDiv = document.createElement('div')
-        wateringDiv.style.display = 'flex'
-        wateringDiv.style.alignItems = 'center'
+        wateringDiv.style.display = 'grid'
+        wateringDiv.style.gridTemplateColumns = 'auto auto'
         
             // info on next watering
             const watering_p = document.createElement('p')
@@ -46,7 +48,8 @@ class Plant {
 
             // water button
             const waterButton = document.createElement('div')
-            waterButton.innerHTML = `<img src="./images/watering-can (1).png" style="margin-left: 10px; width: 2.5vh; height: auto;">`
+            waterButton.classList.add('small-button')
+            waterButton.innerHTML = `<img src="./images/watering-can (1).png" style="width: 2.5vh; height: auto;">`
             
             waterButton.addEventListener('click', () => {
                 this.lastWatered = this.trimDate(TODAY);
@@ -63,7 +66,7 @@ class Plant {
                 localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
                 
                 // update DOM
-                nextWateringDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`;
+                // nextWateringDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`;
                 watering_p.innerText = this.getWateringDL();
             })
             wateringDiv.appendChild(waterButton)
@@ -74,16 +77,17 @@ class Plant {
         const fertilizingDiv = document.createElement('div')
         fertilizingDiv.style.display = 'flex'
         fertilizingDiv.style.alignItems = 'center'
-                        
-            // info on next fertilizing
-            const fertilizing_p = document.createElement('p')
-            fertilizing_p.innerText = this.getFertilizingDL()
-            fertilizingDiv.appendChild(fertilizing_p)
-            
-            // fertlize button
-            const fertilizeButton = document.createElement('div')
-            fertilizeButton.innerHTML = `<img src="./images/npk.png" style="margin-left: 10px; width: 2.5vh; height: auto;">`
-            fertilizeButton.addEventListener('click', () => {
+        
+        // info on next fertilizing
+        const fertilizing_p = document.createElement('p')
+        fertilizing_p.innerText = this.getFertilizingDL()
+        fertilizingDiv.appendChild(fertilizing_p)
+        
+        // fertlize button
+        const fertilizeButton = document.createElement('div')
+        fertilizeButton.innerHTML = `<img src="./images/npk.png" style="width: 2.5vh; height: auto;">`
+        fertilizeButton.classList.add('small-button')
+        fertilizeButton.addEventListener('click', () => {
                 this.lastFertilized = this.trimDate(TODAY);
                 this.nextFertilizingDate = this.addDays(this.lastFertilized, this.fertilizingSchedule)
                 
@@ -99,7 +103,7 @@ class Plant {
                 localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
                 
                 // update DOM
-                nextFertilizingDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`;
+                // nextFertilizingDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`;
                 fertilizing_p.innerText = this.getFertilizingDL()
 
             })
@@ -112,11 +116,29 @@ class Plant {
         removeButton.classList = "remove-button"
             
         // assemble plantDiv element and append it to the collection
-        plantDiv.appendChild(nextWateringDate_p)
-        plantDiv.appendChild(nextFertilizingDate_p)
+        // plantDiv.appendChild(nextWateringDate_p)
+        // plantDiv.appendChild(nextFertilizingDate_p)
         plantDiv.appendChild(wateringDiv)
         plantDiv.appendChild(fertilizingDiv)
         plantDiv.appendChild(removeButton)
+
+
+        plantDiv.addEventListener('click', () => {
+            console.log('ran');
+            const popUpDiv = document.createElement('div');
+            popUpDiv.classList.add('plant-info-popup')
+            popUpDiv.innerHTML = `
+            <p>Water me every: ${this.wateringSchedule} days</p>
+            <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
+            <p>${this.notes}</p>
+
+            `
+            plantDiv.appendChild(popUpDiv)
+            setTimeout(()=>{
+                popUpDiv.remove()
+            }, 3000)
+        })
+
         plantCollection.appendChild(plantDiv);
 
         //handle removing plant
@@ -160,5 +182,4 @@ class Plant {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
     }
 }
-
 
