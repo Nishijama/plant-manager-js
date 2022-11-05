@@ -38,8 +38,10 @@ class Plant {
 
         // watering row
         const wateringDiv = document.createElement('div')
-        wateringDiv.style.display = 'grid'
-        wateringDiv.style.gridTemplateColumns = 'auto auto'
+        wateringDiv.style.display = 'flex'
+        wateringDiv.style.alignItems = 'center'
+
+        // wateringDiv.style.gridTemplateColumns = 'auto auto'
         
             // info on next watering
             const watering_p = document.createElement('p')
