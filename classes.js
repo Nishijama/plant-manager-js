@@ -25,7 +25,7 @@ class Plant {
         console.log(this.plantType);
 
         plantDiv.innerHTML = `
-        <img src="./images/plants/${this.plantType}.png" style="width: 250px; height: auto;">
+        <img class="plant-icon" src="./images/plants/${this.plantType}.png">
         <h2>${this.plantName}</h2>
         `
 

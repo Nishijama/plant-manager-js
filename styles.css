@@ -118,10 +118,22 @@ button:hover {
     animation-duration: 5s;
 }
 
+.plant-icon {
+    width: 250px; 
+    height: auto;
+    animation-name: plantDraw;
+    animation-duration: 1s;
+}
+
 @keyframes popUpFade {
     0% {opacity: 1;}
     0% {opacity: 1;}
     100% {opacity: 0;}
+}
+
+@keyframes plantDraw {
+    0% {opacity: 0}
+    100% {opacity: 1}
 }
 
 @media only screen and (max-width: 800px) {
