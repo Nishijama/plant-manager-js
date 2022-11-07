@@ -153,6 +153,10 @@ button:hover {
     animation-duration: 1s;
 }
 
+.plant-head:hover {
+    cursor: pointer;
+}
+
 .plant-icon {
     width: 250px; 
     height: auto;

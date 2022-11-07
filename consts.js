@@ -1,7 +1,6 @@
 
 if (!localStorage.getItem('PLANT_COLLECTION')){
-    let emptyCollection = []
-    localStorage.setItem('PLANT_COLLECTION', JSON.stringify(emptyCollection))
+    localStorage.setItem('PLANT_COLLECTION', JSON.stringify([]))
 }
 
 let PLANT_COLLECTION = JSON.parse(localStorage.getItem('PLANT_COLLECTION'))

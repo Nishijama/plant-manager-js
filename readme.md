@@ -2,3 +2,8 @@
 ## A vanila-js portfolio piece 
 
 ### Technologies: JS, CSS, HTML
+
+
+TODO:
+- confirm removal
+- animations on hover

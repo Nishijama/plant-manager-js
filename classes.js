@@ -18,10 +18,14 @@ class Plant {
     draw() {
         const plantDiv = document.createElement('div')
         plantDiv.classList.add('plant-item')
-        plantDiv.innerHTML = `
+        
+        const plantHead = document.createElement('div')
+        plantHead.classList.add('plant-head')
+        plantHead.innerHTML = `
         <img class="plant-icon" src="./images/plants/${this.plantType}.png">
         <h2>${this.plantName}</h2>
         `
+        plantDiv.appendChild(plantHead)
         // create watering and fertilizing info text
         const infoDiv = document.createElement('div')
         infoDiv.classList.add('info-div')
@@ -41,7 +45,7 @@ class Plant {
         
         
         // show detail box      
-        plantDiv.addEventListener('click', (e) => {
+        plantHead.addEventListener('click', (e) => {
             e.stopImmediatePropagation()
             detailBox.style.display = 'block'
         })
@@ -152,9 +156,10 @@ class Plant {
         popUpDiv.appendChild(removeButton)
         //handle removing plant
         removeButton.addEventListener('click', e => {
+            if (!window.confirm("Do you want to remove this plant?"))
+            return 0;
             e.target.parentElement.parentElement.remove();
-            let filtered = PLANT_COLLECTION.filter(obj => obj.id !== obj.id);
-            PLANT_COLLECTION = filtered;
+            let filtered = PLANT_COLLECTION.filter(item => item.id !== obj.id);
             localStorage.setItem('PLANT_COLLECTION', JSON.stringify(filtered));
             })
         return popUpDiv;
