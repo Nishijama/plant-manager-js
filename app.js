@@ -1,4 +1,17 @@
 
+    // sort the Plant Collection to show first ones that need to be tended first
+    PLANT_COLLECTION.sort((a, b) => {
+        if ((a.nextWateringDate < b.nextWateringDate && a.nextWateringDate < b.nextFertilizingDate) || 
+            (a.nextFertilizingDate < b.nextWateringDate && a.nextFertilizingDate < b.nextFertilizingDate))
+            return -1
+        if ((a.nextWateringDate > b.nextWateringDate && a.nextWateringDate > b.nextFertilizingDate) || 
+            (a.nextFertilizingDate > b.nextWateringDate && a.nextFertilizingDate > b.nextFertilizingDate))
+            return 1
+        return 0;
+    })
+
+    localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
+    
     // draw each plant from local storage
     for (const plant of PLANT_COLLECTION) {
         const newPlant = new Plant(plant);
@@ -37,8 +50,10 @@
         const lastFertilized = document.getElementById('fertilizing-last-date').value;
         const fertilizingSchedule = document.getElementById('fertilizing-time-input').value;
         const notes = document.getElementById('notes-input').value;
+
         // call function to create a Plant object and add it to the site
         addPlant({plantName, plantType, lastWatered, lastFertilized, wateringSchedule, fertilizingSchedule, notes});
+        
         //hide the modal
         modal.style.display = 'none'
         // reset all form fields
@@ -51,6 +66,8 @@
         PLANT_COLLECTION.push(plant)
         localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION))
     }
+
+
 
 
    function testingFunction() {

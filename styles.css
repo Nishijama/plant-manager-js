@@ -21,6 +21,13 @@ body {
     flex-direction: column;
 }
 
+#add-plant-button {
+    color: black;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+}
+
 #plant-collection {
     padding: 30px;
     display: flex;
@@ -48,13 +55,15 @@ body {
 #pop-up {
     width: 50%;
     background-color: white;
-    padding: 15px;
+    padding: 3vmin;
+    border-radius: 1vmin;
+    animation: popUpFade 1s ;
 }
 
 #pop-up > form > input, 
 #pop-up > form > button,
 #pop-up > form > select {
-    font-size: 2.5vmin;
+    font-size: 2vmin;
     width: 100%;
     display: block;
     margin: 10px auto;
@@ -62,6 +71,11 @@ body {
     border-radius: 10px;
     border:1px solid #c1dfc4;
     box-shadow: none;
+}
+
+
+select:invalid { 
+    color: gray; 
 }
 
 button {
@@ -75,30 +89,50 @@ button {
 
 }
 
+.close {
+    font-size: 30px;
+    position: absolute;
+    top: 0;
+    right: 15px;
+}
+
+.close:hover {
+    cursor: pointer;
+    color: #16a085;
+    font-weight: bold;
+}
+
+.plant-item {
+    position: relative;
+    margin-top: 10vh;
+    margin: 10vh 5vw;
+}
+
 button:hover {
     background-color:#c1dfc4;
     cursor: pointer;
 }
 
 .remove-button {
-    position:absolute;
-    top: 0;
-    right: 0;
-    width: 2.5vh;
-    height: auto;
+    color: gray;
+    width: fit-content;
 }
 
 .remove-button:hover {
     color: darkred;
     cursor: pointer;
-
 }
 
 .small-button {
-    border: 1px solid black;
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin-left: 15px;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.small-button > img {
+    object-fit: contain;
+    width: 3vh; 
+    height: auto;
 }
 
 .small-button:hover {
@@ -107,34 +141,39 @@ button:hover {
 }
 
 .plant-info-popup {
-    display: block;
+    display: none;
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
     background-color: white;
     border-radius: 15px;
     padding: 15px;
     animation-name: popUpFade;
-    animation-duration: 5s;
+    animation-duration: 1s;
 }
 
 .plant-icon {
     width: 250px; 
     height: auto;
-    animation-name: plantDraw;
-    animation-duration: 1s;
+    animation-name: plantDraw 1s;
+}
+
+.info-div {
+    display: grid;
+    grid-template-columns: auto auto;
 }
 
 @keyframes popUpFade {
-    0% {opacity: 1;}
-    0% {opacity: 1;}
-    100% {opacity: 0;}
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
 
 @keyframes plantDraw {
     0% {opacity: 0}
     100% {opacity: 1}
 }
+
 
 @media only screen and (max-width: 800px) {
     #plant-collection {
@@ -144,9 +183,6 @@ button:hover {
         justify-content: space-around;
     }
     #pop-up {
-        width: 80%;
-    }
-    #add-plant-button {
         width: 80%;
     }
 }

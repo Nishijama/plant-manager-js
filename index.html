@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button id="add-plant-button">Add a new plant 🌿</button>
+    <h1 id="add-plant-button">+ Add a new plant</h1>
     <div id="plant-collection"></div>
     
     <div id="modal">
         <div id="pop-up">
             <form id="plant-form">
                 <input type="text" required name="plant-name" id="plant-name-input" placeholder="What's my name?">
-                <select id="plant-type-input">
-                    <option value="">What am I like?</option>
+                <select required id="plant-type-input">
+                    <option disabled selected hidden value="">What am I like?</option>
                     <option value="cactus">Cactus</option>
                     <option value="fern">Fern</option>
                     <option value="ficus">Ficus</option>

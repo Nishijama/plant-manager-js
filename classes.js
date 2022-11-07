@@ -14,144 +14,151 @@ class Plant {
     }
 
 
-    draw() {
     // create the HTML for signle plant
+    draw() {
         const plantDiv = document.createElement('div')
         plantDiv.classList.add('plant-item')
-        plantDiv.style.position = 'relative'
-        plantDiv.style.marginTop = "10vh"
-        plantDiv.style.margin = "10vh 5vw"
-        
-        console.log(this.plantType);
-
         plantDiv.innerHTML = `
         <img class="plant-icon" src="./images/plants/${this.plantType}.png">
         <h2>${this.plantName}</h2>
         `
+        // create watering and fertilizing info text
+        const infoDiv = document.createElement('div')
+        infoDiv.classList.add('info-div')
+        
+        // use method defined below to create each row with all the functionality
+        const wateringRow = this.createWatteringRow(this)
+        const fertilizingRow = this.createFertilizingRow(this)
+        
+        // append both rows to the grid element
+        infoDiv.append(...wateringRow, ...fertilizingRow)
+        plantDiv.appendChild(infoDiv)
 
-        // const nextWateringDate_p = document.createElement('p')
-        // nextWateringDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`
+        // create a detail box
+        const detailBox = this.createDetailBox(this)
 
-        // const nextFertilizingDate_p = document.createElement('p')
-        // nextFertilizingDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`
+        plantDiv.appendChild(detailBox)
+        
+        
+        // show detail box      
+        plantDiv.addEventListener('click', (e) => {
+            e.stopImmediatePropagation()
+            detailBox.style.display = 'block'
+        })
 
-
+        // append the plant to the collection
+        plantCollection.appendChild(plantDiv);
+    }
+    // create html for watering info
+    createWatteringRow(obj) {
         // watering row
         const wateringDiv = document.createElement('div')
-        wateringDiv.style.display = 'flex'
-        wateringDiv.style.alignItems = 'center'
 
-        // wateringDiv.style.gridTemplateColumns = 'auto auto'
-        
+        wateringDiv.classList.add('water-fertilize-info')
+
             // info on next watering
             const watering_p = document.createElement('p')
-            watering_p.innerText = this.getWateringDL()
+            watering_p.style.display = 'inline-block'
+            watering_p.style.width = 'fit-content'
+            watering_p.innerText = obj.getWateringDL()
             wateringDiv.appendChild(watering_p)
 
             // water button
             const waterButton = document.createElement('div')
             waterButton.classList.add('small-button')
-            waterButton.innerHTML = `<img src="./images/watering-can (1).png" style="width: 2.5vh; height: auto;">`
+            waterButton.innerHTML = `<img src="./images/watering-can (1).png">`
             
-            waterButton.addEventListener('click', () => {
-                this.lastWatered = this.trimDate(TODAY);
-                this.nextWateringDate = this.addDays(this.lastWatered, this.wateringSchedule)
+            waterButton.addEventListener('click', (e) => {
+                e.stopImmediatePropagation();
+                obj.lastWatered = obj.trimDate(TODAY);
+                obj.nextWateringDate = obj.addDays(obj.lastWatered, obj.wateringSchedule)
                 
                 // handle updating local storage with new watering data
                 for (let item of PLANT_COLLECTION) {
-                        if (item.id === this.id){
+                        if (item.id === obj.id){
                         let index = (PLANT_COLLECTION.indexOf(item));
-                        PLANT_COLLECTION[index].lastWatered = this.lastWatered
-                        PLANT_COLLECTION[index].nextWateringDate = this.nextWateringDate
+                        PLANT_COLLECTION[index].lastWatered = obj.lastWatered
+                        PLANT_COLLECTION[index].nextWateringDate = obj.nextWateringDate
                     }
                 }
                 localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
                 
-                // update DOM
-                // nextWateringDate_p.innerText = `Water me on: ${this.nextWateringDate.toLocaleDateString()}`;
-                watering_p.innerText = this.getWateringDL();
+                // update DOM after updating date
+                watering_p.innerText = obj.getWateringDL();
             })
-            wateringDiv.appendChild(waterButton)
-        
-        
-
-        // fertilizing row
-        const fertilizingDiv = document.createElement('div')
-        fertilizingDiv.style.display = 'flex'
-        fertilizingDiv.style.alignItems = 'center'
-        
+            // wateringDiv.appendChild(waterButton)
+        return [watering_p, waterButton]
+    }
+    // create html for fertilizing info
+    createFertilizingRow(obj) {
         // info on next fertilizing
         const fertilizing_p = document.createElement('p')
-        fertilizing_p.innerText = this.getFertilizingDL()
-        fertilizingDiv.appendChild(fertilizing_p)
+        fertilizing_p.style.display = 'inline-block'
+        fertilizing_p.style.width = 'fit-content'
+        fertilizing_p.innerText = obj.getFertilizingDL()
         
         // fertlize button
         const fertilizeButton = document.createElement('div')
-        fertilizeButton.innerHTML = `<img src="./images/npk.png" style="width: 2.5vh; height: auto;">`
+        fertilizeButton.innerHTML = `<img src="./images/npk.png">`
         fertilizeButton.classList.add('small-button')
-        fertilizeButton.addEventListener('click', () => {
-                this.lastFertilized = this.trimDate(TODAY);
-                this.nextFertilizingDate = this.addDays(this.lastFertilized, this.fertilizingSchedule)
-                
-                // handle updating local storage with new watering data
-                for (let item of PLANT_COLLECTION) {
-                    if (item.id === this.id){
-                        let index = (PLANT_COLLECTION.indexOf(item));
-                        PLANT_COLLECTION[index].lastFertilized = this.lastFertilized
-                        PLANT_COLLECTION[index].nextFertilizingDate = this.nextFertilizingDate
-                    }  
-                }
-
-                localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
-                
-                // update DOM
-                // nextFertilizingDate_p.innerText = `Fertilize me on: ${this.nextFertilizingDate.toLocaleDateString()}`;
-                fertilizing_p.innerText = this.getFertilizingDL()
-
-            })
-            fertilizingDiv.appendChild(fertilizeButton)
+        fertilizeButton.addEventListener('click', (e) => {
+            e.stopImmediatePropagation();
+            obj.lastFertilized = obj.trimDate(TODAY);
+            obj.nextFertilizingDate = obj.addDays(obj.lastFertilized, obj.fertilizingSchedule)
             
-            
-        // remove button
-        const removeButton = document.createElement('img')
-        removeButton.src = "./images/billhook.png"
-        removeButton.classList = "remove-button"
-            
-        // assemble plantDiv element and append it to the collection
-        // plantDiv.appendChild(nextWateringDate_p)
-        // plantDiv.appendChild(nextFertilizingDate_p)
-        plantDiv.appendChild(wateringDiv)
-        plantDiv.appendChild(fertilizingDiv)
-        plantDiv.appendChild(removeButton)
-
-
-        plantDiv.addEventListener('click', () => {
-            console.log('ran');
-            const popUpDiv = document.createElement('div');
-            popUpDiv.classList.add('plant-info-popup')
-            popUpDiv.innerHTML = `
-            <p>Water me every: ${this.wateringSchedule} days</p>
-            <p>Fertilize me every: ${this.fertilizingSchedule} days</p>
-            <p>${this.notes}</p>
-
-            `
-            plantDiv.appendChild(popUpDiv)
-            setTimeout(()=>{
-                popUpDiv.remove()
-            }, 3000)
+            // handle updating local storage with new watering data
+            for (let item of PLANT_COLLECTION) {
+                if (item.id === obj.id){
+                    let index = (PLANT_COLLECTION.indexOf(item));
+                    PLANT_COLLECTION[index].lastFertilized = obj.lastFertilized
+                    PLANT_COLLECTION[index].nextFertilizingDate = obj.nextFertilizingDate
+                }  
+            }
+            // update DOM after updating date
+            fertilizing_p.innerText = obj.getFertilizingDL()
+            localStorage.setItem('PLANT_COLLECTION', JSON.stringify(PLANT_COLLECTION));
         })
+        return [fertilizing_p, fertilizeButton];
+            
+    }
+    // create html for description box for the plant
+    createDetailBox(obj) {
+        const popUpDiv = document.createElement('div');
+        popUpDiv.classList.add('plant-info-popup')
+        popUpDiv.innerHTML = `
+        <p><b>${obj.plantName}</b></p>
+        <p>${obj.notes}</p>
+        <p>Water every ${obj.wateringSchedule} days</p>
+        <p>Fertilize every ${obj.fertilizingSchedule} days</p>
+        `
 
-        plantCollection.appendChild(plantDiv);
+        // create close button
+        const closeBtn = document.createElement('span')
+        closeBtn.classList.add('close')
+        closeBtn.innerHTML = '&times;'
+        
+        closeBtn.addEventListener('click', e => {
+            e.stopImmediatePropagation()
+            console.log(e.target.parentElement.style.display);
+            e.target.parentElement.style.display = 'none'
+            console.log(e.target.parentElement.style.display);
+        })
+        popUpDiv.appendChild(closeBtn)
 
+        // create remove button
+        const removeButton = document.createElement('p')
+        removeButton.innerText = "Remove"
+        removeButton.classList = "remove-button"
+        popUpDiv.appendChild(removeButton)
         //handle removing plant
         removeButton.addEventListener('click', e => {
-            e.target.parentElement.remove();
-            let filtered = PLANT_COLLECTION.filter(obj => obj.id !== this.id);
+            e.target.parentElement.parentElement.remove();
+            let filtered = PLANT_COLLECTION.filter(obj => obj.id !== obj.id);
             PLANT_COLLECTION = filtered;
             localStorage.setItem('PLANT_COLLECTION', JSON.stringify(filtered));
-        })
+            })
+        return popUpDiv;
     }
-
     // calculate next watering date
     getWateringDL() {
         if (this.nextWateringDate > this.trimDate(TODAY)) {
